@@ -1,20 +1,28 @@
 package tests;
 
-import dataStore.ChatMatter;
 import org.testng.annotations.AfterMethod;
+import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
+import pages.BinaryOptionsTradingPage;
+
+import static dataStore.ChatMatter.GENERAL_INFORMATION;
 
 public class LiveChatTest extends BaseTest{
+
+    @BeforeMethod
+    public void openBinaryOptionsTradingPage(){
+        driver.get(APPLICATION_URL);
+        binaryOptionsTradingPage = new BinaryOptionsTradingPage(driver);
+    }
 
     @Test(description = "Verify that the message 'Invalid e-mail' appears when non ISO standard email is being added",
             dataProvider = "invalid emails")
     public void testEmailValidationMessage(String invalidEmail) {
         String name = "John";
-        openBinaryOptionsTradingPage();
         openLiveChat();
         liveChatPage.typeName(name);
-        liveChatPage.selectChatMatter(ChatMatter.GENERAL_INFORMATION);
+        liveChatPage.selectChatMatter(GENERAL_INFORMATION);
         liveChatPage.typeEmail(invalidEmail);
         liveChatPage.clickStartTheChat();
         verifyInvalidEmailMessageAppears();

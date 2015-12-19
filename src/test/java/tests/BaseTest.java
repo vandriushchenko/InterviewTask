@@ -1,6 +1,5 @@
 package tests;
 
-import dataStore.ValidationMessages;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
@@ -17,11 +16,13 @@ import pages.LiveChatPage;
 
 import java.util.concurrent.TimeUnit;
 
+import static dataStore.ValidationMessages.INVALID_EMAIL;
+
 public abstract class BaseTest {
     protected WebDriver driver;
     protected BinaryOptionsTradingPage binaryOptionsTradingPage;
     protected LiveChatPage liveChatPage;
-    private static final String APPLICATION_URL = "https://trade.24option.com/24option/?lang=en#Trade";
+    public static final String APPLICATION_URL = "https://trade.24option.com/24option/?lang=en#Trade";
     private static final long TIMEOUT = 5;
     private static final String DRIVERS_PATH = "src/test/resources/drivers";
 
@@ -30,7 +31,6 @@ public abstract class BaseTest {
     public void setUp(@Optional(BrowserType.FIREFOX) String browser){
         initBrowser(browser);
         driver.manage().timeouts().implicitlyWait(TIMEOUT, TimeUnit.SECONDS);
-        driver.get(APPLICATION_URL);
     }
 
     @AfterSuite(alwaysRun = true)
@@ -40,10 +40,6 @@ public abstract class BaseTest {
         }
     }
 
-    public void openBinaryOptionsTradingPage(){
-        binaryOptionsTradingPage = new BinaryOptionsTradingPage(driver);
-    }
-
     public void openLiveChat(){
         liveChatPage = binaryOptionsTradingPage.openLiveChat();
         binaryOptionsTradingPage.switchToAnotherWindow();
@@ -51,7 +47,7 @@ public abstract class BaseTest {
 
     public void verifyInvalidEmailMessageAppears(){
         try {
-            Assert.assertEquals(liveChatPage.getValidationMessageText(), ValidationMessages.INVALID_EMAIL);
+            Assert.assertEquals(liveChatPage.getValidationMessageText(), INVALID_EMAIL);
         }
         catch (NoSuchElementException e){
             Assert.fail("Validation message hasn't been appeared");

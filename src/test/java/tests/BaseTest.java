@@ -47,7 +47,7 @@ public abstract class BaseTest {
 
     public void verifyInvalidEmailMessageAppears(){
         try {
-            Assert.assertEquals(liveChatPage.getValidationMessageText(), INVALID_EMAIL);
+            Assert.assertEquals(liveChatPage.getValidationMessageText(), INVALID_EMAIL, "Wrong validation message has been appeared");
         }
         catch (NoSuchElementException e){
             Assert.fail("Validation message hasn't been appeared");

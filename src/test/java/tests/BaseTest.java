@@ -20,7 +20,7 @@ public abstract class BaseTest {
     protected BinaryOptionsTradingPage binaryOptionsTradingPage;
     protected LiveChatPage liveChatPage;
     public static final String APPLICATION_URL = "https://trade.24option.com/24option/?lang=en#Trade";
-    public static final long TIMEOUT = 5;
+    public static final long TIMEOUT = 30;
     private static final String DRIVERS_PATH = "src/test/resources/drivers";
     private String browser;
 

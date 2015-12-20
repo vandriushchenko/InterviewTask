@@ -6,19 +6,31 @@ import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 import pages.BinaryOptionsTradingPage;
 
+import java.util.concurrent.TimeUnit;
+
 import static dataStore.ChatMatter.GENERAL_INFORMATION;
 
 public class LiveChatTest extends BaseTest{
 
-    @BeforeMethod
+    @BeforeMethod(alwaysRun = true)
     public void openBinaryOptionsTradingPage(){
+        initBrowser();
+        driver.manage().timeouts().implicitlyWait(TIMEOUT, TimeUnit.SECONDS);
         driver.get(APPLICATION_URL);
         binaryOptionsTradingPage = new BinaryOptionsTradingPage(driver);
     }
 
+    @AfterMethod(alwaysRun = true)
+    public void closeApplication(){
+        driver.manage().deleteAllCookies();
+        if (driver != null) {
+            driver.quit();
+        }
+    }
+
     @Test(description = "Verify that the message 'Invalid e-mail' appears when non ISO standard email is being added",
             dataProvider = "invalid emails")
-    public void testEmailValidationMessage(String invalidEmail) {
+    public void testEmailValidationMessage(String invalidEmail){
         String name = "John";
         openLiveChat();
         liveChatPage.typeName(name);
@@ -40,13 +52,4 @@ public class LiveChatTest extends BaseTest{
                 {"abc"}
         };
     }
-
-    @AfterMethod(alwaysRun = true)
-    public void closeLiveChatWindow(){
-        if (driver != null) {
-            driver.close();
-            liveChatPage.switchToAnotherWindow();
-        }
-    }
-
 }

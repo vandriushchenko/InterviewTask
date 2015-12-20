@@ -28,10 +28,12 @@ public class LiveChatPage extends BasePage{
     }
 
     public void typeName(String name){
+        nameField.clear();
         nameField.sendKeys(name);
     }
 
     public void typeEmail(String email){
+        emailField.clear();
         emailField.sendKeys(email);
     }
 
